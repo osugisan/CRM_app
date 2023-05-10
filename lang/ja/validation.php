@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'accepted'             => ':attributeを承認してください。',
+    'accepted'             => ': を承認してください。',
     'accepted_if' => ':otherが:valueの場合、:attributeを承認してください。',
     'active_url'           => ':attributeが有効なURLではありません。',
     'after'                => ':attributeには、:dateより後の日付を指定してください。',
@@ -23,7 +23,7 @@ return [
     'alpha_num'            => ':attributeはアルファベット数字がご利用できます。',
     'array'                => ':attributeは配列でなくてはなりません。',
     'before'               => ':attributeには、:dateより前の日付をご利用ください。',
-    'before_or_equal'      => ':attributeには、:date以前の日付をご利用ください。',
+    'before_or_equal'      => ':attri    buteには、:date以前の日付をご利用ください。',
     'between'              => [
         'numeric' => ':attributeは、:minから:maxの間で指定してください。',
         'file'    => ':attributeは、:min kBから、:max kBの間で指定してください。',
@@ -153,6 +153,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'title' => '件名',
+        'content' => '内容'
+    ],
 
 ];
