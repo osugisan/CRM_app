@@ -25,6 +25,7 @@ return new class extends Migration
             $table->tinyInteger('gender');
             $table->text('memo')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

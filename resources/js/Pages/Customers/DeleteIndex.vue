@@ -3,14 +3,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import FlashMessage from '@/Components/FlashMessage.vue';
 import Pagination from '@/Components/Pagination.vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { Inertia } from '@inertiajs/inertia';
-import { ref } from 'vue';
-
-const search = ref('')
-
-const searchCustomers = () => {
-    Inertia.get(route('customers.index', { search: search.value}))
-}
 
 defineProps({
     customers: Object,
@@ -18,11 +10,11 @@ defineProps({
 </script>
 
 <template>
-    <Head title="顧客一覧" />
+    <Head title="削除顧客一覧" />
     
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">顧客一覧</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">削除</h2>
         </template>
         
         <div class="py-12">
@@ -34,18 +26,6 @@ defineProps({
 
                                 <FlashMessage />
                                 
-                                <div class="flex pl-4 my-4 lg:w-2/3 w-full mx-auto">
-                                    <div>
-                                        <input type="text" name="search" v-model="search">
-                                        <button class="bg-blue-300 text-white py-2 px-2"
-                                            @click="searchCustomers">
-                                            検索
-                                        </button>
-                                    </div>
-                                    <Link as="button" :href="route('customers.create')" class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">顧客登録</Link>
-                                    <Link as="button" :href="route('customers.deleteIndex')" class="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">削除顧客一覧</Link>
-                                </div>
-
                                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
                                     <table class="table-auto w-full text-left whitespace-no-wrap">
                                         <thead>

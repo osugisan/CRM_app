@@ -14,6 +14,15 @@ Route::resource('items', ItemController::class)
 Route::resource('customers', CustomerController::class)
     ->middleware(['auth', 'verified']);
 
+Route::get('/customers/delete-index', [CustomerController::class, 'deleteIndex'])
+    ->name('customers.deleteIndex')->middleware(['auth', 'verified']);
+    
+Route::post('/customers/restore', [CustomerController::class, 'restore'])
+    ->name('customers.restore')->middleware(['auth', 'verified']);
+
+Route::delete('/customers/forcedelete', [CustomerController::class, 'forcedelete'])
+    ->name('customers.forcedelete')->middleware(['auth', 'verified']);
+
 Route::get('/inertia-test', function () {
     return Inertia::render('InertiaTest');
 });
