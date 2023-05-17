@@ -6,6 +6,7 @@ use App\Http\Requests\StorePurchaseRequest;
 use App\Http\Requests\UpdatePurchaseRequest;
 use App\Models\Customer;
 use App\Models\Item;
+use App\Models\Order;
 use App\Models\Purchase;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -19,7 +20,20 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        //
+        // dd(Order::paginate(50));
+
+        $orders = Order::groupBy('id')
+            ->selectRaw('
+                id, 
+                sum(subtotal) as total,
+                customer_name,
+                status,
+                created_at')
+            ->paginate(50);
+        
+        return Inertia::render('Purchases/Index', [
+            'orders' => $orders
+        ]);
     }
 
     /**
@@ -77,7 +91,25 @@ class PurchaseController extends Controller
      */
     public function show(Purchase $purchase)
     {
-        //
+        // 合計
+        $order = Order::groupBy('id')
+            ->where('id', $purchase->id)
+            ->selectRaw('
+                id, 
+                sum(subtotal) as total,
+                customer_name,
+                status,
+                created_at,
+                updated_at')
+            ->get();
+
+        // 小計
+        $items = Order::where('id', $purchase->id)->get();
+
+        return Inertia::render('Purchases/Show', [
+            'order' => $order,
+            'items' => $items
+        ]);
     }
 
     /**
@@ -88,7 +120,43 @@ class PurchaseController extends Controller
      */
     public function edit(Purchase $purchase)
     {
-        //
+        $purchase = Purchase::find($purchase->id);
+        $allItems = Item::select('id', 'name', 'price')->get();
+
+        $items =[];
+
+        foreach($allItems as $allItem) {
+            $qty = 0;
+
+            foreach($purchase->items as $item) {
+                if($allItem->id === $item->id) {
+                    $qty = $item->pivot->qty;
+                }
+            }
+
+            array_push( $items, [
+                'id' => $allItem->id,
+                'name' => $allItem->name,
+                'price' => $allItem->price,
+                'qty' => $qty,
+            ]);
+        }
+
+        $order = Order::groupBy('id')
+            ->where('id', $purchase->id)
+            ->selectRaw('
+                id, 
+                customer_id,
+                customer_name,
+                status,
+                created_at,
+                updated_at')
+            ->get();
+
+        return Inertia::render('Purchases/Edit', [
+            'items' => $items,
+            'order' => $order
+        ]);
     }
 
     /**
@@ -100,7 +168,21 @@ class PurchaseController extends Controller
      */
     public function update(UpdatePurchaseRequest $request, Purchase $purchase)
     {
-        //
+        $purchase->status = $request->status;
+        $purchase->save();
+
+        $items =[];
+
+        foreach($request->items as $item) {
+            $items = $items + [
+                $item['id'] => [
+                    'qty' => $item['qty']
+                ]
+            ];
+        }
+
+        $purchase->items()->sync($items);
+        return to_route('dashboard');
     }
 
     /**

@@ -2,16 +2,16 @@
 import axios from 'axios'
 import { ref, onMounted, reactive } from 'vue'
 
+// onMounted( () => {
+  //   axios.get('/api/user')
+  //     .then( res => {
+    //       console.log(res)
+    //     })
+    // })
+
 const search = ref('')
 const customers = reactive({})
-
-// onMounted( () => {
-//   axios.get('/api/user')
-//     .then( res => {
-//       console.log(res)
-//     })
-// })
-
+    
 const isShow = ref(false)
 
 const toggleStatus = () => { isShow.value = !isShow.value }
