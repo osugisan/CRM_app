@@ -28,4 +28,3 @@ const barData = reactive({
     <BarChart :chartData="barData" />
   </div>
 </template>
-
