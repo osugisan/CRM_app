@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 import { nl2br } from '@/common'
 

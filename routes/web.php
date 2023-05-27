@@ -6,9 +6,27 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\InertiaTestController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\AnalysisController;
 
 Route::resource('items', ItemController::class)
     ->middleware(['auth', 'verified']);
+
+Route::resource('customers', CustomerController::class)
+    ->middleware(['auth', 'verified']);
+
+Route::resource('purchases', PurchaseController::class)
+    ->middleware(['auth', 'verified']);
+
+Route::get('/customers/delete-index', [CustomerController::class, 'deleteIndex'])
+    ->name('customers.deleteIndex')->middleware(['auth', 'verified']);
+    
+Route::post('/customers/restore', [CustomerController::class, 'restore'])
+    ->name('customers.restore')->middleware(['auth', 'verified']);
+
+Route::delete('/customers/forcedelete', [CustomerController::class, 'forcedelete'])
+    ->name('customers.forcedelete')->middleware(['auth', 'verified']);
 
 Route::get('/inertia-test', function () {
     return Inertia::render('InertiaTest');
@@ -18,6 +36,7 @@ Route::get('/component-test', function () {
     return Inertia::render('ComponentTest');
 });
 
+Route::get('analysis', [AnalysisController::class, 'index'])->name('analysis');
 Route::get('/inertia/index', [InertiaTestController::class, 'index'])->name('inertia.index');
 Route::get('/inertia/create', [InertiaTestController::class, 'create'])->name('inertia.create');
 Route::post('/inertia', [InertiaTestController::class, 'store'])->name('inertia.store');

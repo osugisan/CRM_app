@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AnalysisApiController;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +15,17 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::middleware('auth:sanctum')->get('/analysis', [AnalysisApiController::class, 'index'])
+    ->name('api.analysis');
+
+Route::middleware('auth:sanctum')->get('/searchCustomers', function (Request $request) {
+    return Customer::searchCustomers($request->search)->select('id', 'name', 'kana', 'tel')->paginate(50);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::middleware('auth:sanctum')->get('/test', function (Request $request) {
     return $request->user();
 });
